@@ -1,3 +1,4 @@
+print("SavedOutfitsV3.lua")
 script = realcso_script
 local LocalPlayer = game.Players.LocalPlayer;
 local Outfits = viewedfits

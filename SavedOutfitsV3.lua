@@ -1,3 +1,4 @@
+script = realcso_script
 local LocalPlayer = game.Players.LocalPlayer;
 local Outfits = viewedfits
 local CatalogModule = require(game.ReplicatedStorage.CatalogModule);

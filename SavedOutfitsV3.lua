@@ -126,7 +126,7 @@ function ViewOutfitDetails(u4)
     table.insert(u3, v13);
     local v14 = OutfitDetails.Wear.Activated:Once(function() -- Line: 165
         -- upvalues: CatalogModule (ref), u5 (copy), u4 (copy)
-        game.ReplicatedStorage.Event.CatalogGuiRemote:InvokeServer({
+        game.ReplicatedStorage.Events.CatalogGuiRemote:InvokeServer({
             Action = "CreateAndWearHumanoidDescription",
             Properties = CatalogModule:ToDictionary(u5),
             RigType = u4:GetAttribute("RigType")
@@ -152,7 +152,7 @@ function ViewOutfitDetails(u4)
     table.insert(u3, v15);
     table.insert(u3, ViewOutfitDetails2.List.OutfitActions.DeleteOutfit.Activated:Connect(function() -- Line: 201
         -- upvalues: SavedOutfitsRemote (ref), u4 (copy)
-        if game.ReplicatedStorage.ClientPromptYesNoInput:Invoke({
+        if game.ReplicatedStorage.Events.ClientPromptYesNoInput:Invoke({
             PromptText = "Are you sure you would like to delete this outfit?"
         }) then
             ExitOutfitDetailsScreen();
@@ -205,7 +205,7 @@ function ViewOutfitDetails(u4)
     end));
     table.insert(u3, ViewOutfitDetails2.List.OutfitActions.RenameOutfit.Activated:Connect(function() -- Line: 250
         -- upvalues: u4 (copy), SavedOutfitsRemote (ref)
-        local v17 = game.ReplicatedStorage.ClientPromptTextInput:Invoke({
+        local v17 = game.ReplicatedStorage.Events.ClientPromptTextInput:Invoke({
             PromptText = "What would you like to rename your outfit to?",
             MaxCharacters = 100,
             PlaceholderText = "Unnamed Outfit",
@@ -222,7 +222,7 @@ function ViewOutfitDetails(u4)
         end;
     end));
     table.insert(u3, ViewOutfitDetails2.List.OutfitActions.ShareOutfit.Activated:Connect(function() -- Line: 270
-        game.ReplicatedStorage.ClientPopupMessage:Fire("Equip this outfit and then publish it to Community Outfits to share it!", 6);
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Equip this outfit and then publish it to Community Outfits to share it!", 6);
     end));
     table.insert(u3, ViewOutfitDetails2.List.OutfitActions.ModifyFolders.Activated:Connect(function() -- Line: 278
         -- upvalues: u4 (copy), OutfitFolderSelector (ref), SavedOutfitsRemote (ref), UpdateBeneathOutfitDetailsText (copy), u3 (ref)
@@ -256,7 +256,7 @@ function ViewOutfitDetails(u4)
             table.sort(v21);
 
             if table.concat(u18, ",") ~= table.concat(v21, ",") then
-                game.ReplicatedStorage.ClientPopupMessage:Fire("Successfully updated outfit folders.");
+                game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Successfully updated outfit folders.");
                 SavedOutfitsRemote:InvokeServer({
                     Action = "UpdateOutfitFolders",
                     GUID = u4:GetAttribute("GUID"),
@@ -376,7 +376,7 @@ function CreateOutfitButton(u26)
 
         u27:SetAttribute("ConfigsOpen", false);
         u27:SetAttribute("IsFocused", false);
-        game.ReplicatedStorage.Event.CatalogGuiRemote:InvokeServer({
+        game.ReplicatedStorage.Events.CatalogGuiRemote:InvokeServer({
             Action = "CreateAndWearHumanoidDescription",
             Properties = CatalogModule:ToDictionary(u26:FindFirstChildOfClass("HumanoidDescription")),
             RigType = Enum.HumanoidRigType[u26:GetAttribute("RigType") or "R15"]
@@ -667,7 +667,7 @@ end;
 
 OutfitFolderSelector.List.CreateNew.Activated:Connect(function() -- Line: 787
     -- upvalues: OutfitFolderSelector (copy), CreateNewOutfitFolderSelectorButton (copy)
-    local v56 = game.ReplicatedStorage.ClientPromptTextInput:Invoke({
+    local v56 = game.ReplicatedStorage.Events.ClientPromptTextInput:Invoke({
         PromptText = "Enter a name for your new Outfit Folder",
         PlaceholderText = "Enter folder name..",
         MaxCharacters = 14,
@@ -739,7 +739,7 @@ CreateNew.Activated:Connect(function() -- Line: 852
     -- upvalues: u2 (ref), CreateNewOutfit (copy), Main (copy), AvatarPreview (copy), EquippedItems (copy), ShortcutMenu (copy), OutfitFolderSelector (copy), u1 (ref), AvatarViewportFactory (copy), LocalPlayer (copy)
     if u2 then
         if #GetSelectedOutfitButtons() > 0 then
-            game.ReplicatedStorage.ClientPopupMessage:Fire("You Cannot Create a new Outfit whilst in Outfit Selection Mode.");
+            game.ReplicatedStorage.Events.ClientPopupMessage:Fire("You Cannot Create a new Outfit whilst in Outfit Selection Mode.");
 
             return;
         end;
@@ -1039,7 +1039,7 @@ FolderConfigs.DeleteFolder.Activated:Connect(function() -- Line: 1124
     -- upvalues: u88 (ref), FolderConfigs (copy), u1 (ref), SavedOutfitsRemote (copy)
     if u88 then
         FolderConfigs.Visible = false;
-        local v89 = game.ReplicatedStorage.ClientPromptYesNoInput:Invoke({
+        local v89 = game.ReplicatedStorage.Events.ClientPromptYesNoInput:Invoke({
             PromptText = "Are you sure you would like to delete folder \"" .. u88 .. "\"?"
         });
         FolderConfigs.Visible = true;
@@ -1052,7 +1052,7 @@ FolderConfigs.DeleteFolder.Activated:Connect(function() -- Line: 1124
                 Action = "DeleteOutfitFolder",
                 FolderToDelete = u88
             });
-            game.ReplicatedStorage.ClientPopupMessage:Fire("Folder \"" .. u88 .. "\" has been deleted.");
+            game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Folder \"" .. u88 .. "\" has been deleted.");
             u88 = nil;
             UpdateOutfitFolderButtons();
         end;
@@ -1070,7 +1070,7 @@ FolderConfigs.FolderName.TextBox.FocusLost:Connect(function() -- Line: 1142
     end;
 
     if v93 == "All" or string.gsub(v93, "%s", "") == "" then
-        game.ReplicatedStorage.ClientPopupMessage:Fire("This folder name is not allowed.");
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("This folder name is not allowed.");
 
         return;
     end;
@@ -1081,7 +1081,7 @@ FolderConfigs.FolderName.TextBox.FocusLost:Connect(function() -- Line: 1142
         FolderToRename = u88,
         RenameTo = v93
     });
-    game.ReplicatedStorage.ClientPopupMessage:Fire("Successfully renamed folder to \"" .. v93 .. "\"");
+    game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Successfully renamed folder to \"" .. v93 .. "\"");
     u88 = v93;
     u1 = v93;
     UpdateOutfitFolderButtons();
@@ -1172,10 +1172,10 @@ function ToggleOpen(p103)
     end;
 
     Holder.Visible = u102;
-    game.ReplicatedStorage.ClientToggleUIVisible:Fire(not u102, { "Undo", "Redo" }, u102);
+    game.ReplicatedStorage.Events.ClientToggleUIVisible:Fire(not u102, { "Undo", "Redo" }, u102);
 
     if u102 then
-        game.ReplicatedStorage.ClientOnGuiOpened:Fire(script.Parent);
+        game.ReplicatedStorage.Events.ClientOnGuiOpened:Fire(script.Parent);
     end;
 end;
 
@@ -1286,12 +1286,12 @@ BottomLeftButtons.DeleteSelection.Activated:Connect(function() -- Line: 1367
     local v112, v113 = GetSelectedOutfitButtons();
 
     if #v113 == 0 then
-        game.ReplicatedStorage.ClientPopupMessage:Fire("You have not selected any outfits!");
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("You have not selected any outfits!");
 
         return;
     end;
 
-    if game.ReplicatedStorage.ClientPromptYesNoInput:Invoke({
+    if game.ReplicatedStorage.Events.ClientPromptYesNoInput:Invoke({
         PromptText = "Are you sure you would like to delete the " .. #v112 .. " selected outfit" .. (#v112 == 1 and "" or "s") .. "?"
     }) then
         ToggleOutfitSelectionMode(false);
@@ -1299,7 +1299,7 @@ BottomLeftButtons.DeleteSelection.Activated:Connect(function() -- Line: 1367
             Action = "BulkDeleteOutfits",
             OutfitGUIDs = v113
         });
-        game.ReplicatedStorage.ClientPopupMessage:Fire("Successfully deleted " .. #v112 .. " outfits.");
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Successfully deleted " .. #v112 .. " outfits.");
     end;
 end);
 BottomLeftButtons.RemoveFromFolder.Activated:Connect(function() -- Line: 1384
@@ -1307,12 +1307,12 @@ BottomLeftButtons.RemoveFromFolder.Activated:Connect(function() -- Line: 1384
     local v114, v115 = GetSelectedOutfitButtons();
 
     if #v115 == 0 then
-        game.ReplicatedStorage.ClientPopupMessage:Fire("You have not selected any outfits!");
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("You have not selected any outfits!");
 
         return;
     end;
 
-    if game.ReplicatedStorage.ClientPromptYesNoInput:Invoke({
+    if game.ReplicatedStorage.Events.ClientPromptYesNoInput:Invoke({
         PromptText = "Are you sure you would like to remove the " .. #v114 .. " selected outfit" .. (#v115 == 1 and "" or "s") .. " from the folder \"" .. u1 .. "\"?"
     }) then
         ToggleOutfitSelectionMode(false);
@@ -1321,7 +1321,7 @@ BottomLeftButtons.RemoveFromFolder.Activated:Connect(function() -- Line: 1384
             OutfitGUIDs = v115,
             FolderToRemoveFrom = u1
         });
-        game.ReplicatedStorage.ClientPopupMessage:Fire("Successfully removed " .. #v114 .. " outfits from folder \"" .. u1 .. "\".");
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Successfully removed " .. #v114 .. " outfits from folder \"" .. u1 .. "\".");
         DisplayRelevantOutfits();
     end;
 end);
@@ -1331,7 +1331,7 @@ BottomLeftButtons.AddToFolder.Activated:Connect(function() -- Line: 1402
     UpdateOutfitFolderButtons();
 
     if #u116 == 0 then
-        game.ReplicatedStorage.ClientPopupMessage:Fire("You have not selected any outfits!");
+        game.ReplicatedStorage.Events.ClientPopupMessage:Fire("You have not selected any outfits!");
 
         return;
     end;
@@ -1351,7 +1351,7 @@ BottomLeftButtons.AddToFolder.Activated:Connect(function() -- Line: 1402
             end;
         end;
 
-        if #v118 > 0 and game.ReplicatedStorage.ClientPromptYesNoInput:Invoke({
+        if #v118 > 0 and game.ReplicatedStorage.Events.ClientPromptYesNoInput:Invoke({
             PromptText = "Add " .. #u116 .. " selected outfit" .. (#u116 == 1 and "" or "s") .. " to " .. #v118 .. " folder" .. (#v118 == 1 and "" or "s") .. "?"
         }) then
             ToggleOutfitSelectionMode(false);
@@ -1360,7 +1360,7 @@ BottomLeftButtons.AddToFolder.Activated:Connect(function() -- Line: 1402
                 OutfitGUIDs = u116,
                 FoldersToAddTo = v118
             });
-            game.ReplicatedStorage.ClientPopupMessage:Fire("Successfully added " .. #u116 .. " selected outfit" .. (#u116 == 1 and "" or "s") .. " to " .. #v118 .. " folder" .. (#v118 == 1 and "" or "s") .. "!");
+            game.ReplicatedStorage.Events.ClientPopupMessage:Fire("Successfully added " .. #u116 .. " selected outfit" .. (#u116 == 1 and "" or "s") .. " to " .. #v118 .. " folder" .. (#v118 == 1 and "" or "s") .. "!");
             UpdateOutfitFolderButtons();
         end;
     end);

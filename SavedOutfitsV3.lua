@@ -126,7 +126,7 @@ function ViewOutfitDetails(u4)
     table.insert(u3, v13);
     local v14 = OutfitDetails.Wear.Activated:Once(function() -- Line: 165
         -- upvalues: CatalogModule (ref), u5 (copy), u4 (copy)
-        game.ReplicatedStorage.CatalogGuiRemote:InvokeServer({
+        game.ReplicatedStorage.Event.CatalogGuiRemote:InvokeServer({
             Action = "CreateAndWearHumanoidDescription",
             Properties = CatalogModule:ToDictionary(u5),
             RigType = u4:GetAttribute("RigType")
@@ -376,7 +376,7 @@ function CreateOutfitButton(u26)
 
         u27:SetAttribute("ConfigsOpen", false);
         u27:SetAttribute("IsFocused", false);
-        game.ReplicatedStorage.CatalogGuiRemote:InvokeServer({
+        game.ReplicatedStorage.Event.CatalogGuiRemote:InvokeServer({
             Action = "CreateAndWearHumanoidDescription",
             Properties = CatalogModule:ToDictionary(u26:FindFirstChildOfClass("HumanoidDescription")),
             RigType = Enum.HumanoidRigType[u26:GetAttribute("RigType") or "R15"]
